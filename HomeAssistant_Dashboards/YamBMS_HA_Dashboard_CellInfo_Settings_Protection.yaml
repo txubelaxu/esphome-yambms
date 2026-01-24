@@ -6,8 +6,8 @@ views:
     cards:
       - type: markdown
         content: >-
-          New tabs describing each cell status, settings, and protections
-          (editable).
+          New tabs to monitor each cell status, BMS settings, and protections
+          (protections are editable).
       - type: vertical-stack
         cards:
           - type: custom:stack-in-card
