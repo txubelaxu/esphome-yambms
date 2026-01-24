@@ -34,12 +34,12 @@ logger:
 # +--------------------------------------+
 
 external_components:
-  - source: github://txubelaxu/esphome-jk-bms@main
+  - source: github://Sleeper85/esphome-components@dev
     refresh: 0s
     components: [ jk_rs485_sniffer , jk_rs485_bms ]
   # - source:
   #     type: local
-  #     path: ../esphome-jk-bms/components
+  #     path: ../esphome-components/components
 
 jk_rs485_sniffer:
   - id: ${sniffer_id}
