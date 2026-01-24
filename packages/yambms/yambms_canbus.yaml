@@ -185,6 +185,43 @@ interval:
             lambda: |-
               if ((id(${canbus_id}_send_canbus_data) == true) && (id(${yambms_id}_bms_combined).state > 0))
               {
+                // Victron: do not send any CAN frames until required data is ready
+                if (id(${canbus_id}_protocol).active_index() == 4)
+                {
+                  bool missing =
+                    (id(${yambms_id}_total_voltage).state <= 0) ||
+                    (!id(${yambms_id}_battery_soc).has_state()) ||
+                    (!id(${yambms_id}_battery_capacity_remaining).has_state()) ||
+                    (!id(${yambms_id}_requested_charge_voltage).has_state()) ||
+                    (!id(${yambms_id}_requested_discharge_voltage).has_state()) ||
+                    (!id(${yambms_id}_requested_charge_current).has_state()) ||
+                    (!id(${yambms_id}_requested_discharge_current).has_state()) ||
+                    (id(${yambms_id}_battery_soc).state <= 0) ||
+                    (id(${yambms_id}_battery_capacity_remaining).state <= 0) ||
+                    (id(${yambms_id}_requested_charge_voltage).state <= 0) ||
+                    (id(${yambms_id}_requested_discharge_voltage).state <= 0) ||
+                    (id(${yambms_id}_requested_charge_current).state <= 0) ||
+                    (id(${yambms_id}_requested_discharge_current).state <= 0);
+
+                  if (missing)
+                  {
+                    static uint32_t last_victron_wait_log = 0;
+                    uint32_t now = millis();
+                    if (now - last_victron_wait_log >= 2000) {
+                      ESP_LOGI("victron", "### VIC-WAIT ### data not ready | V=%.2f SOC=%.1f CAP=%.1f CVL=%.2f DVL=%.2f CCL=%.1f DCL=%.1f",
+                               id(${yambms_id}_total_voltage).state,
+                               id(${yambms_id}_battery_soc).state,
+                               id(${yambms_id}_battery_capacity_remaining).state,
+                               id(${yambms_id}_requested_charge_voltage).state,
+                               id(${yambms_id}_requested_discharge_voltage).state,
+                               id(${yambms_id}_requested_charge_current).state,
+                               id(${yambms_id}_requested_discharge_current).state);
+                      last_victron_wait_log = now;
+                    }
+                    return false;
+                  }
+                }
+
                 int index = id(${canbus_id}_can_frame_index);
 
                 // PYLON 1.2 / LuxPower CAN frames
