@@ -103,14 +103,14 @@ packages:
 
   board:
     url: https://github.com/txubelaxu/esphome-yambms
-    ref: update-candidate-2026-08-17
+    ref: update-candidate-2026-08-17-soc-na-fix
     refresh: 0min
     files:
       - path: 'packages/board/board_ESP32-S3_Freenove.yaml'
 
   board_options:
     url: https://github.com/txubelaxu/esphome-yambms
-    ref: update-candidate-2026-08-17
+    ref: update-candidate-2026-08-17-soc-na-fix
     refresh: 0min
     files:
       - path: 'packages/board/board_options_itf_uart_esp_1.yaml'
@@ -125,7 +125,7 @@ packages:
 
   bms:
     url: https://github.com/txubelaxu/esphome-yambms
-    ref: update-candidate-2026-08-17
+    ref: update-candidate-2026-08-17-soc-na-fix
     refresh: 0min
     files:
       - path: 'packages/bms/bms_combine_JK_RS485_Modbus_sniffer.yaml'
@@ -145,14 +145,14 @@ packages:
 
   yambms:
     url: https://github.com/txubelaxu/esphome-yambms
-    ref: update-candidate-2026-08-17
+    ref: update-candidate-2026-08-17-soc-na-fix
     refresh: 0min
     files:
       - path: 'packages/yambms/yambms.yaml'
 
   canbus:
     url: https://github.com/txubelaxu/esphome-yambms
-    ref: update-candidate-2026-08-17
+    ref: update-candidate-2026-08-17-soc-na-fix
     refresh: 0min
     files:
       - path: 'packages/yambms/yambms_canbus.yaml'
@@ -165,7 +165,7 @@ packages:
 
   debug:
     url: https://github.com/txubelaxu/esphome-yambms
-    ref: update-candidate-2026-08-17
+    ref: update-candidate-2026-08-17-soc-na-fix
     refresh: 0min
     files:
       - path: packages/base/device_debug_ESP32.yaml
