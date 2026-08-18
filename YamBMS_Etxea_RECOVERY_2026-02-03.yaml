@@ -8,7 +8,7 @@
 # fichero seguirá siendo reconstruible exactamente igual dentro de meses
 # o años, pase lo que pase en las ramas.
 #
-# Diferencia clave con YamBMS_Sololuze.yaml: el fichero de placa se llama
+# Diferencia clave con YamBMS_Etxea.yaml: el fichero de placa se llama
 # aquí `board_ESP32-S3_Freenove.yaml` (nombre antiguo) en vez de
 # `board_ESP32-S3_freenove_esp32_s3_wroom.yaml` - ese renombrado ocurrió
 # el 2026-02-09, seis días DESPUÉS de esta compilación.

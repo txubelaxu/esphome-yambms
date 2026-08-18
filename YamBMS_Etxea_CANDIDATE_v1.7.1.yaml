@@ -3,7 +3,7 @@
 # a v1.8.0). NO se ha compilado ni flasheado todavía - es un candidato para
 # revisar antes de subirlo al ESP32-S3 real.
 #
-# Cambios respecto al que corre hoy (YamBMS_Sololuze_RECOVERY_2026-02-03.yaml):
+# Cambios respecto al que corre hoy (YamBMS_Etxea_RECOVERY_2026-02-03.yaml):
 #   - yambms_id: 'yambms1' -> '1'   (cambio de convención obligatorio desde el
 #     28-jun-2026; si no se hace, TODAS las entidades sensor.yambms_yambms_1_*
 #     que usa la automatización de PVPC en Home Assistant se romperían en
