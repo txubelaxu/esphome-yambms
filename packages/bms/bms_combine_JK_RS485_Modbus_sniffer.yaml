@@ -34,7 +34,10 @@ logger:
 # +--------------------------------------+
 
 external_components:
-  - source: github://Sleeper85/esphome-components@main
+  - source: github://txubelaxu/esphome-jk-bms@main   # <-- CAMBIADO: antes Sleeper85/esphome-components,
+                                                       #     que copiaba (de forma más antigua/recortada)
+                                                       #     el propio componente jk_rs485_bms/jk_rs485_sniffer
+                                                       #     de este fork. Usamos la fuente propia directamente.
     refresh: 0s
     components: [ jk_rs485_sniffer , jk_rs485_bms ]
   # - source:
