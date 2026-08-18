@@ -1,9 +1,9 @@
-# CANDIDATO DE ACTUALIZACIÓN - basado en el tag fijo `update-candidate-2026-08-10`
-# (YamBMS core v1.7.1, Sleeper85/esphome-yambms, justo antes de la reescritura
-# a v1.8.0). NO se ha compilado ni flasheado todavía - es un candidato para
-# revisar antes de subirlo al ESP32-S3 real.
+# CANDIDATO DE ACTUALIZACIÓN - EN PRODUCCIÓN desde 2026-08-18 en el ESP32-S3
+# real (172.26.1.77). Basado en el tag fijo `update-candidate-2026-08-17`
+# (YamBMS core, Sleeper85/esphome-yambms @ e183d20, justo antes de la
+# reescritura a v1.8.0).
 #
-# Cambios respecto al que corre hoy (YamBMS_Etxea_RECOVERY_2026-02-03.yaml):
+# Cambios respecto al que corría antes (YamBMS_Etxea_RECOVERY_2026-02-03.yaml):
 #   - yambms_id: 'yambms1' -> '1'   (cambio de convención obligatorio desde el
 #     28-jun-2026; si no se hace, TODAS las entidades sensor.yambms_yambms_1_*
 #     que usa la automatización de PVPC en Home Assistant se romperían en
@@ -13,19 +13,24 @@
 #     y global_update_fault() esperan un entero de instancia, no el prefijo
 #     completo. Sin este cambio la compilación falla con
 #     "'canbus1' was not declared in this scope" en yambms_canbus.yaml)
-#   - Todos los paquetes apuntan a `ref: update-candidate-2026-08-10` en vez
-#     de a un `dev`/`main` que se sigue moviendo.
+#   - mcp2515_clock: '16MHz' añadido explícitamente (ver vars: en board_options
+#     más abajo) - el conversor MCP2515 real lleva un cristal de 16MHz, pero el
+#     paquete asume 8MHz si no se sobreescribe. Sin esto, el 100% de las tramas
+#     CAN fallan sin ACK del inversor - causa raíz confirmada el 2026-08-18.
+#   - Todos los paquetes actualizados el 2026-08-18 de `update-candidate-2026-08-10`
+#     a `update-candidate-2026-08-17` (19 commits de Sleeper85/esphome-yambms,
+#     17-jun a 17-ago-2026). Revisados uno a uno: la inmensa mayoría son
+#     irrelevantes para esta instalación (soporte de pantallas que no usamos,
+#     compliance de Modbus para BMS/shunt/balancer que no usamos - nuestro
+#     JK-BMS va por sniffer UART). El único cambio funcional relevante:
+#   - "Adjust Rebulk SoC if higher than target SoC" (29-jun-2026): con
+#     `Auto SoC Limit Mode = Float` y `Rebulk SoC >= Auto SoC Limit`, el
+#     sistema priorizaba mal el rebulk. Nuestros valores actuales (Rebulk
+#     SoC 85% >= Auto SoC Limit 80%) caen justo en ese caso, aunque el switch
+#     `Automatic SoC Limit` está en `off` así que no se dispara hoy. Si se
+#     activa ese switch en el futuro, este fix ya estará aplicado.
 #   - Nuevas opciones disponibles desde entonces: `loop_task_stack_size`
 #     (dejada en su valor por defecto, 8192).
-#
-# PENDIENTE ANTES DE COMPILAR DE VERDAD:
-#   - Revisar el changelog completo entre recovery-point-2026-02-03 y este
-#     tag (188 commits) por si hay algo más específico a tu instalación que
-#     no se haya detectado en el barrido inicial.
-#   - Confirmar que ESPHome instalado sea >= 2026.1.5 (mínimo que exige este
-#     punto - ver "Updated ESPHome min_version" 2026-02-09).
-#   - Probar primero SIN flashear en producción si es posible (otro ESP32-S3
-#     de pruebas, o al menos revisar bien el log de compilación).
 
 wifi:
   ssid: !secret wifi_ssid
@@ -98,14 +103,14 @@ packages:
 
   board:
     url: https://github.com/txubelaxu/esphome-yambms
-    ref: update-candidate-2026-08-10
+    ref: update-candidate-2026-08-17
     refresh: 0min
     files:
       - path: 'packages/board/board_ESP32-S3_Freenove.yaml'
 
   board_options:
     url: https://github.com/txubelaxu/esphome-yambms
-    ref: update-candidate-2026-08-10
+    ref: update-candidate-2026-08-17
     refresh: 0min
     files:
       - path: 'packages/board/board_options_itf_uart_esp_1.yaml'
@@ -120,7 +125,7 @@ packages:
 
   bms:
     url: https://github.com/txubelaxu/esphome-yambms
-    ref: update-candidate-2026-08-10
+    ref: update-candidate-2026-08-17
     refresh: 0min
     files:
       - path: 'packages/bms/bms_combine_JK_RS485_Modbus_sniffer.yaml'
@@ -140,14 +145,14 @@ packages:
 
   yambms:
     url: https://github.com/txubelaxu/esphome-yambms
-    ref: update-candidate-2026-08-10
+    ref: update-candidate-2026-08-17
     refresh: 0min
     files:
       - path: 'packages/yambms/yambms.yaml'
 
   canbus:
     url: https://github.com/txubelaxu/esphome-yambms
-    ref: update-candidate-2026-08-10
+    ref: update-candidate-2026-08-17
     refresh: 0min
     files:
       - path: 'packages/yambms/yambms_canbus.yaml'
@@ -160,7 +165,7 @@ packages:
 
   debug:
     url: https://github.com/txubelaxu/esphome-yambms
-    ref: update-candidate-2026-08-10
+    ref: update-candidate-2026-08-17
     refresh: 0min
     files:
       - path: packages/base/device_debug_ESP32.yaml
