@@ -8,6 +8,11 @@
 #     28-jun-2026; si no se hace, TODAS las entidades sensor.yambms_yambms_1_*
 #     que usa la automatización de PVPC en Home Assistant se romperían en
 #     silencio - ver HA/README.txt)
+#   - canbus_id: 'canbus1' -> '1'   (mismo cambio de convención, añadido con el
+#     "Component Fault Registry" del 5-feb-2026 - PR #194: global_register_led()
+#     y global_update_fault() esperan un entero de instancia, no el prefijo
+#     completo. Sin este cambio la compilación falla con
+#     "'canbus1' was not declared in this scope" en yambms_canbus.yaml)
 #   - Todos los paquetes apuntan a `ref: update-candidate-2026-08-10` en vez
 #     de a un `dev`/`main` que se sigue moviendo.
 #   - Nuevas opciones disponibles desde entonces: `loop_task_stack_size`
@@ -107,6 +112,11 @@ packages:
       - path: 'packages/board/board_options_itf_canbus_mcp2515.yaml'
         vars:
           canbus_node_id: 'canbus_inverter_1'
+          mcp2515_clock: '16MHz'   # <-- AÑADIDO: el conversor físico lleva un cristal de 16MHz,
+                                    #     pero el paquete asume 8MHz por defecto si no se sobreescribe.
+                                    #     Confirmado el 2026-08-18: la variable 'canbus_clock: 16MHz'
+                                    #     del substitutions de arriba estaba huérfana (no la usa
+                                    #     ningún paquete) - por eso nunca llegaba a aplicarse.
 
   bms:
     url: https://github.com/txubelaxu/esphome-yambms
@@ -142,7 +152,7 @@ packages:
     files:
       - path: 'packages/yambms/yambms_canbus.yaml'
         vars:
-          canbus_id: 'canbus1'
+          canbus_id: '1'              # <-- CAMBIADO: antes 'canbus1', ahora número solo
           canbus_name: 'CANBUS 1'
           canbus_node_id: 'canbus_inverter_1'
           canbus_light_id: 'esp_light'

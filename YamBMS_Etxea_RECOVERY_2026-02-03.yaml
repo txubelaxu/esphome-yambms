@@ -12,6 +12,15 @@
 # aquí `board_ESP32-S3_Freenove.yaml` (nombre antiguo) en vez de
 # `board_ESP32-S3_freenove_esp32_s3_wroom.yaml` - ese renombrado ocurrió
 # el 2026-02-09, seis días DESPUÉS de esta compilación.
+#
+# CORRECCIÓN AÑADIDA el 2026-08-18 (no estaba en el código original de esta
+# fecha): mcp2515_clock: '16MHz' en el paquete board_options_itf_canbus_mcp2515.
+# El conversor MCP2515 real lleva un cristal de 16MHz, pero el paquete asume
+# 8MHz si no se sobreescribe. Sin este override el bitrate real del bus CAN
+# sale duplicado y el Cerbo GX Victron no puede sincronizar - fallo total de
+# comunicación con el inversor. Se descubrió y confirmó hoy en el candidato
+# v1.7.1 y se retroaplica aquí porque es un bug de config, no de versión:
+# lleva presente (sin corregir) en todo el histórico de esphome-yambms.
 
 wifi:
   ssid: !secret wifi_ssid
@@ -98,6 +107,11 @@ packages:
       - path: 'packages/board/board_options_itf_canbus_mcp2515.yaml'
         vars:
           canbus_node_id: 'canbus_inverter_1'
+          mcp2515_clock: '16MHz'   # <-- AÑADIDO: el conversor físico lleva un cristal de 16MHz,
+                                    #     pero el paquete asume 8MHz por defecto si no se sobreescribe.
+                                    #     Confirmado el 2026-08-18 (misma causa raíz que en el
+                                    #     candidato v1.7.1): sin este override, el bitrate real del
+                                    #     bus sale duplicado y el Cerbo GX no puede sincronizar.
 
   bms:
     url: https://github.com/txubelaxu/esphome-yambms
